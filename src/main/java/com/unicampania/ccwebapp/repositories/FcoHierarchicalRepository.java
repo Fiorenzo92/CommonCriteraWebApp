@@ -15,4 +15,9 @@ public interface FcoHierarchicalRepository extends JpaRepository<FcoHierarchical
             nativeQuery = true)
     List<FcoHierarchical> fcohierarchicalQuery(@Param("id") String id);
 
+
+    @Query(value = "SELECT fcohierarchical.* FROM listfco INNER JOIN fcohierarchical ON listfco.id = fcohierarchical.idf",
+            nativeQuery = true)
+    List<FcoHierarchical> fcohierarchicalShowQuery();
+
 }

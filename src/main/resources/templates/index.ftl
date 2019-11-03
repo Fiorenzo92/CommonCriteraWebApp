@@ -59,7 +59,7 @@
 <strong style="color: #51b42b"> SECURITY REQUIREMENTS </strong>
 <br/>
 <p><a ui-sref="edit">EDIT</a></p>
-<p><a ui-sref="show">SHOW</a></p>
+<p><a ui-sref="show" >SHOW</a></p>
 </td>
 </tr>
 <tr>

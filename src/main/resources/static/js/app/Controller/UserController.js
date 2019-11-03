@@ -65,6 +65,13 @@ angular.module('crudApp').controller('UserController',
         self.getListFcoManagement = getListFcoManagement;
 
 
+        self.listdependence = [];
+        self.getListDependence = getListDependence;
+
+        self.hierarchicalshow = [];
+        self.gethierarchicalshow = gethierarchicalshow;
+
+
 //----------------------- Nella view per visualizzare gli elementi-----------------
         function getAllUsers(){
                   return UserService.getAllUsers();
@@ -127,6 +134,19 @@ angular.module('crudApp').controller('UserController',
          function getFelement(){
                   return UserService.getFelement();
          }
+
+         function getListDependence(){
+
+                   return UserService.getListDependences();
+         }
+
+          function gethierarchicalshow(){
+
+                            return UserService.getLoadHierarchicalShow();
+                  }
+
+
+
 //------------- Passa id dell'Fclass al Service e cambia view dopo aver ricevuto il response---------------
         function selectUser(id) {
             self.successMessage='';
@@ -359,8 +379,6 @@ angular.module('crudApp').controller('UserController',
                                                  }
                                             );
              }
-
-
 
         }
     ]);

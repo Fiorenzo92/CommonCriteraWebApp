@@ -46,7 +46,7 @@ public class RestApiController {
 	FcoEvaluatorNotesRepository fcoEvaluatorNotesRepository;
 
 	@Autowired
-	ListFcoRepository listFClassRepository;
+	ListFcoRepository listFfcoRepository;
 
 	@Autowired
 	FfBehaviourRepository ffBehaviourRepository;
@@ -292,7 +292,7 @@ public class RestApiController {
 	public ResponseEntity<?> createFco(@RequestBody ListFco f, UriComponentsBuilder ucBuilder) {
 		logger.info("Creating ListFclass : {}", f);
 
-		List<ListFco> listfclass = listFClassRepository.listFclassQuery();
+		List<ListFco> listfclass = listFfcoRepository.listFcoQuery();
 		for (int i = 0; i < listfclass.size(); i++) {
 			if (listfclass.get(i).getId().equals(f.getId())) {
 				logger.error("Già presente in listFclass, {} already exist", f.getId());
@@ -301,7 +301,7 @@ public class RestApiController {
 			}
 		}
 
-		listFClassRepository.save(f);
+		listFfcoRepository.save(f);
 		return new ResponseEntity<String>(HttpStatus.CREATED);
 	}
 
@@ -310,33 +310,64 @@ public class RestApiController {
 	public ResponseEntity<?> getListClass() {
 
 		logger.info("Fetching listclass with id");
-		List<ListFco> listfco = listFClassRepository.listFclassQuery();
+		List<ListFco> listfco = listFfcoRepository.listFclassQuery();
 		if ( listfco.isEmpty() ) {
 			logger.error("listfclass not found.");
 			return new ResponseEntity<CustomErrorType>(new CustomErrorType("listfclass not found"), HttpStatus.OK);
 		}
+
+
 		return new ResponseEntity<List<ListFco>>( listfco, HttpStatus.OK);
 	}
 
-// -------------------elimina elemento listFclass (Selected Elements)-----------------------
+	// -------------------lettura dipendenze per la view (Show)-----------------------
+	@RequestMapping(value = "/listdependence/", method = RequestMethod.GET)
+	public ResponseEntity<?> getShowDependence() {
+
+		List<FcoDependencies> listdependence = fcoDipendenciesRepository.fcodipendenciesshowQuery();
+		if (listdependence.isEmpty() ) {
+			logger.error("listdependence not found.");
+			return new ResponseEntity<CustomErrorType>(new CustomErrorType("listfclass not found"), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<List<FcoDependencies>>( listdependence, HttpStatus.OK);
+	}
+	// -------------------lettura hierarchical per la view (Show)-----------------------
+	@RequestMapping(value = "/listhierarchical/", method = RequestMethod.GET)
+	public ResponseEntity<?> getShowHierarchical() {
+
+		List<ListFco> fcoListFco;
+
+		List<FcoHierarchical> hierarchicalshow = fcoHierarchicalRepository.fcohierarchicalShowQuery();
+		if (hierarchicalshow.isEmpty() ) {
+			logger.error("hierarchicalshow not found.");
+			return new ResponseEntity<CustomErrorType>(new CustomErrorType("listfclass not found"), HttpStatus.OK);
+		}
+
+
+		return new ResponseEntity<List<FcoHierarchical>>( hierarchicalshow, HttpStatus.OK);
+	}
+
+
+	// -------------------elimina elemento listFclass (Selected Elements)-----------------------
 	@RequestMapping(value = "/fco/{id:.+}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deletelistFco(@PathVariable("id") String id) {
 
 		logger.info("Fetching & Deleting User with id {}", id);
 
-		ListFco listFClass = listFClassRepository.findOne(id);
+		ListFco listFClass = listFfcoRepository.findOne(id);
 		if (listFClass  == null) {
 			logger.error("Unable to delete. User with id {} not found.", id);
 			return new ResponseEntity<CustomErrorType>(new CustomErrorType("Unable to delete. User with id " + id + " not found."),
 					HttpStatus.NOT_FOUND);
 		}
 
-		listFClassRepository.delete(id);
+		listFfcoRepository.delete(id);
 		return new ResponseEntity<ListFco>(HttpStatus.NO_CONTENT);
 	}
 
 
-	// --------
+	// -------- Programma Esempio-----
 
 	// ------------------- Update a User ------------------------------------------------
 

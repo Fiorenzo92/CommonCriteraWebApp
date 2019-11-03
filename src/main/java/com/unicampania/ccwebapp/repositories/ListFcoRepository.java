@@ -13,6 +13,9 @@ public interface ListFcoRepository extends JpaRepository<ListFco, String> {
     ListFco findByName(String id);
 
     @Query(value = "select * from listfco", nativeQuery = true)
+    List<ListFco> listFcoQuery();
+
+    @Query(value = "SELECT * FROM listfco", nativeQuery = true)
     List<ListFco> listFclassQuery();
 
 

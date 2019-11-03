@@ -16,4 +16,8 @@ public interface FcoDependenciesRepository extends JpaRepository<FcoDependencies
             nativeQuery = true)
     List<FcoDependencies> fcodipendenciesQuery(@Param("id") String id);
 
+
+    @Query(value = "SELECT fcodependencies.* FROM listfco INNER JOIN fcodependencies ON listfco.id = fcodependencies.idf",
+            nativeQuery = true)
+    List<FcoDependencies> fcodipendenciesshowQuery();
 }

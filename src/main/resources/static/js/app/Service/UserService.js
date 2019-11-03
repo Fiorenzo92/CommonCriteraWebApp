@@ -55,6 +55,12 @@ angular.module('crudApp').factory('UserService',
 
                setFelement: setFelement,
                getFelement: getFelement,
+
+               loadDependences: loadDependences,
+               getListDependences: getListDependences,
+
+               loadHierarchicalShow: loadHierarchicalShow,
+               getLoadHierarchicalShow: getLoadHierarchicalShow,
             };
 
             return factory;
@@ -141,6 +147,16 @@ angular.module('crudApp').factory('UserService',
                function getFelement(){
                             return $localStorage.felement;
                }
+
+               function getListDependences() {
+                        return $localStorage.listdependence;
+               }
+
+            function getLoadHierarchicalShow() {
+                        return $localStorage.hierarchicalshow;
+               }
+
+
 
             function setUser (id) {
                 console.log('Fetching User with id :'+id);
@@ -358,6 +374,7 @@ angular.module('crudApp').factory('UserService',
                               .then(
                                   function (response) {
                                       readListFco();
+                                      loadDependences();
                                       deferred.resolve(response.data);
 
                                   },
@@ -379,6 +396,8 @@ angular.module('crudApp').factory('UserService',
                                   function (response) {
                                   console.log('Fetched successfully listFco with id :');
                                   $localStorage.listfco = response.data;
+                                  loadDependences();
+                                  loadHierarchicalShow();
                                   deferred.resolve(response.data);
                                              },
                                   function (errResponse) {
@@ -444,6 +463,45 @@ angular.module('crudApp').factory('UserService',
 
             }
 
+
+              function loadDependences(){
+
+                    var deferred = $q.defer();
+                        $http.get(urls.USER_SERVICE_API + 'listdependence/')
+                                   .then(
+                                      function (response) {
+                                       console.log('Fetched successfully listdependence');
+                                       $localStorage.listdependence = response.data;
+                                       deferred.resolve(response.data);
+                                                                 },
+                                       function (errResponse) {
+                                       console.error('Error while loading listdependence' );
+                                       deferred.reject(errResponse);
+                                                               }
+                                                       );
+                           return deferred.promise;
+
+                    }
+
+
+              function loadHierarchicalShow(){
+
+                    var deferred = $q.defer();
+                        $http.get(urls.USER_SERVICE_API + 'listhierarchical/')
+                                   .then(
+                                      function (response) {
+                                       console.log('Fetched successfully hierarchicalshow');
+                                       $localStorage.hierarchicalshow = response.data;
+                                       deferred.resolve(response.data);
+                                                                 },
+                                       function (errResponse) {
+                                       console.error('Error while loading hierarchicalshow' );
+                                       deferred.reject(errResponse);
+                                                               }
+                                                       );
+                           return deferred.promise;
+
+                    }
 
         }
     ]);
