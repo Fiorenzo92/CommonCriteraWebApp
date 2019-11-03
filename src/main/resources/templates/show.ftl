@@ -40,9 +40,9 @@
 
 
 <div ng-repeat="u in ctrl.getListFco()">
-
+<h3><strong>6.{{$index + 1}}   {{u.id | limitTo: 3}}</strong></h3>
 <ol>
-  <h3><strong>6.{{$index + 1}}  {{u.id}} {{u.name}}</strong></h3>
+  <h3><strong>  {{u.id}} {{u.name}}</strong></h3>
 
 <p> Hierarchical to:
 
